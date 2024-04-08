@@ -3,6 +3,7 @@ import connectDb from "./database/connect.js";
 
 connectDb();
 
-app.listen(process.env.PORT, () => {
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
   console.log(`Server is working on port : ${process.env.PORT}`);
 });
