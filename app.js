@@ -3,10 +3,12 @@ import { config } from "dotenv";
 import cors from "cors";
 import urlRouter from "./routes/url.js";
 import URLModel from "./models/url.js";
-
+import connectDb from "./database/connect.js";
 config();
 
 export const app = express();
+connectDb();
+const PORT = process.env.PORT || 5000;
 
 // middlewares and cors
 app.use(express.json());
@@ -35,4 +37,8 @@ app.get("/:urlId", async (req, res) => {
     }
   );
   res.redirect(doc.longUrl);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is working on port : ${process.env.PORT}`);
 });
