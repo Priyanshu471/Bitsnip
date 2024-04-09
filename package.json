@@ -13,10 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bottleneck": "^2.19.5",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.3.0",
-    "nanoid": "^5.0.6"
+    "nanoid": "^5.0.6",
+    "node-fetch": "^3.3.2"
   }
 }

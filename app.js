@@ -4,6 +4,8 @@ import cors from "cors";
 import urlRouter from "./routes/url.js";
 import URLModel from "./models/url.js";
 import connectDb from "./database/connect.js";
+import { getIp } from "./utils/ipAddress.js";
+import { nanoid } from "nanoid";
 config();
 
 export const app = express();
@@ -24,6 +26,8 @@ app.use(
 app.use("/url", urlRouter);
 app.get("/:urlId", async (req, res) => {
   const urlId = req.params.urlId;
+  const ipAddress = getIp(req);
+  console.log("ipAddress", ipAddress);
   const doc = await URLModel.findOneAndUpdate(
     {
       urlId,
@@ -32,6 +36,7 @@ app.get("/:urlId", async (req, res) => {
       $push: {
         analytics: {
           clickTime: Date.now(),
+          ipAddress,
         },
       },
     }

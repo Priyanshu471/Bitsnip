@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const urlSchema = new mongoose.Schema(
   {
+    userId: {
+      type: String,
+      unique: true,
+    },
     urlId: {
       type: String,
       required: true,
@@ -11,7 +15,12 @@ const urlSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    analytics: [{ clickTime: { type: Number } }],
+    analytics: [
+      {
+        clickTime: { type: Number },
+        ipAddress: { type: String },
+      },
+    ],
   },
   { timestamps: true }
 );
