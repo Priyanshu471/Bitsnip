@@ -4,13 +4,26 @@ import { getTimeStamp } from "../utils/timestamp.js";
 import { getLocation } from "../utils/ipAddress.js";
 
 async function createNewShortUrl(req, res) {
-  const urlId = nanoid(6);
-  const { longUrl } = req.body;
-  if (!longUrl) {
-    return res.status(400).json({ message: "Url is required" });
+  const urlId = nanoid(process.env.ID_LENGTH || 6);
+  const { longUrl, userId } = req.body;
+  if (!longUrl || !userId) {
+    return res.status(400).json({ message: "Url and UserId is required" });
   }
-  await URLModel.create({ urlId, longUrl, analytics: [] });
+  await URLModel.create({ userId, urlId, longUrl, analytics: [] });
   return res.status(201).json({ urlId });
+}
+
+async function deleteUrl(req, res) {
+  const { urlId } = req.params;
+  if (!urlId) {
+    return res.status(400).json({ message: "urlId is required" });
+  }
+  try {
+    await URLModel.findOneAndDelete({ urlId });
+    return res.status(204).json({ message: "Deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Error deleting url" });
+  }
 }
 
 async function getAnalytics(req, res) {
@@ -32,4 +45,21 @@ async function getAnalytics(req, res) {
     alllocations: alllocations,
   });
 }
-export { createNewShortUrl, getAnalytics };
+
+async function getAllUrls(req, res) {
+  let { userId } = req.params;
+  if (!userId) {
+    return res.status(400).json({ message: "userId is required" });
+  }
+  console.log(userId);
+  const docs = await URLModel.find({ userId });
+  const urls = docs.map((doc) => ({
+    urlId: doc.urlId,
+    longUrl: doc.longUrl,
+  }));
+  return res.status(200).json({
+    urls,
+  });
+}
+
+export { createNewShortUrl, deleteUrl, getAnalytics, getAllUrls };

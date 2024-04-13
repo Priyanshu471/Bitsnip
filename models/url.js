@@ -4,7 +4,7 @@ const urlSchema = new mongoose.Schema(
   {
     userId: {
       type: String,
-      unique: true,
+      required: true,
     },
     urlId: {
       type: String,
