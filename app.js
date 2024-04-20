@@ -6,6 +6,7 @@ import URLModel from "./models/url.js";
 import connectDb from "./database/connect.js";
 import { getIp } from "./utils/ipAddress.js";
 import linkPreview from "linkpreview-for-node";
+import { getDeviceInfo } from "./utils/deviceInfo.js";
 
 config();
 
@@ -59,10 +60,10 @@ app.post("/preview", async (req, res) => {
 });
 app.get("/:urlId", async (req, res) => {
   const urlId = req.params.urlId;
-  // ...
 
   const ipAddress = getIp(req);
-  console.log("ipAddress", ipAddress);
+  const deviceInfo = getDeviceInfo(req);
+  console.log(deviceInfo);
   const doc = await URLModel.findOneAndUpdate(
     {
       urlId,
@@ -72,6 +73,7 @@ app.get("/:urlId", async (req, res) => {
         analytics: {
           clickTime: Date.now(),
           ipAddress,
+          deviceInfo,
         },
       },
     }

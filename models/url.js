@@ -19,6 +19,7 @@ const urlSchema = new mongoose.Schema(
       {
         clickTime: { type: Number },
         ipAddress: { type: String },
+        deviceInfo: { type: Object },
       },
     ],
   },

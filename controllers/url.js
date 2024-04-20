@@ -42,13 +42,15 @@ async function getAnalytics(req, res) {
   const ipAddresses = doc.analytics.map((item) => item.ipAddress);
 
   const allTimestamps = getTimeStamp(epoch);
-  const alllocations = await getLocation([...new Set(ipAddresses)]);
+  const alllocations = await getLocation(ipAddresses);
+  const allDevicesInfo = doc.analytics.map((item) => item.deviceInfo);
 
   return res.json({
     totalClicks: doc.analytics.length,
     ipAddresses: [...new Set(ipAddresses)],
     allTimestamps: allTimestamps,
     alllocations: alllocations,
+    allDevicesInfo: allDevicesInfo,
   });
 }
 
