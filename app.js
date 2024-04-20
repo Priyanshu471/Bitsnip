@@ -85,6 +85,9 @@ app.get("/:urlId", async (req, res) => {
     res.status(404).json({ error: "URL not found" });
   }
 });
+app.get("/", (req, res) => {
+  res.sendFile("index.html", { root: "./public" });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is working on port : ${process.env.PORT}`);
